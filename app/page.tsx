@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 import { WritingSystemSelector } from '@/components/WritingSystemSelector'
 import { JapaneseSymbol } from '@/components/JapaneseSymbol'
 import { AnswerInput } from '@/components/AnswerInput'
+import { Button } from '@/components/Button'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -50,6 +51,7 @@ const pronunciations: { [key: string]: string } = {
 export default function Home() {
   const [writingSystem, setWritingSystem] = useState<'katakana' | 'hiragana' | null>(null)
   const [currentSymbol, setCurrentSymbol] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (writingSystem) {
@@ -65,13 +67,24 @@ export default function Home() {
 
   const handleAnswer = async (answer: string) => {
     if (currentSymbol && answer.toLowerCase() === pronunciations[currentSymbol]) {
-      await supabase
-        .from('learned_syllables')
-        .insert({ syllable: currentSymbol, writing_system: writingSystem })
-      getRandomSymbol()
+      try {
+        await supabase
+          .from('learned_syllables')
+          .insert({ syllable: currentSymbol, writing_system: writingSystem })
+        getRandomSymbol()
+        setError(null)
+      } catch (err) {
+        console.error('Error saving learned syllable:', err)
+        setError('There was a problem saving the learned syllable. Please try again.')
+      }
     } else {
-      alert('Incorrecto. Inténtalo de nuevo.')
+      setError('Incorrect. Please try again.')
     }
+  }
+
+  const toggleWritingSystem = () => {
+    setWritingSystem(prev => prev === 'hiragana' ? 'katakana' : 'hiragana')
+    setError(null)
   }
 
   if (!writingSystem) {
@@ -85,11 +98,21 @@ export default function Home() {
 
   return (
     <div className="container mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-4">Learn {writingSystem}</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Learn {writingSystem}!</h1>
+        <Button onClick={toggleWritingSystem}>
+          Switch to {writingSystem === 'hiragana' ? 'Katakana' : 'Hiragana'}
+        </Button>
+      </div>
       {currentSymbol && (
         <>
           <JapaneseSymbol symbol={currentSymbol} />
           <AnswerInput onSubmit={handleAnswer} />
+          {error && (
+            <div className="mt-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
+              {error}
+            </div>
+          )}
         </>
       )}
     </div>
