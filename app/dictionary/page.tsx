@@ -83,9 +83,9 @@ export default function Dictionary() {
     const renderSyllables = (writingSystem: string) => {
         const filteredSyllables = learnedSyllables.filter(s => s.writing_system === writingSystem)
         return (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
                 {filteredSyllables.map((syllable) => (
-                    <div key={syllable.id} className="border p-4 rounded">
+                    <div key={syllable.id} className="border text-center p-4 rounded">
                         <p className="text-2xl font-bold">{syllable.syllable}</p>
                         <p className="text-sm text-gray-600">{pronunciations[syllable.syllable]}</p>
                     </div>

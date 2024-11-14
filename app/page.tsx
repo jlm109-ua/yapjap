@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { WritingSystemSelector } from '@/components/WritingSystemSelector'
 import { JapaneseSymbol } from '@/components/JapaneseSymbol'
@@ -53,17 +53,17 @@ export default function Home() {
   const [currentSymbol, setCurrentSymbol] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+  const getRandomSymbol = useCallback(() => {
+    const symbols = writingSystem === 'katakana' ? katakana : hiragana
+    const randomIndex = Math.floor(Math.random() * symbols.length)
+    setCurrentSymbol(symbols[randomIndex])
+  }, [writingSystem])
+
   useEffect(() => {
     if (writingSystem) {
       getRandomSymbol()
     }
-  }, [writingSystem])
-
-  const getRandomSymbol = () => {
-    const symbols = writingSystem === 'katakana' ? katakana : hiragana
-    const randomIndex = Math.floor(Math.random() * symbols.length)
-    setCurrentSymbol(symbols[randomIndex])
-  }
+  }, [writingSystem, getRandomSymbol])
 
   const handleAnswer = async (answer: string) => {
     if (currentSymbol && answer.toLowerCase() === pronunciations[currentSymbol]) {
