@@ -23,7 +23,7 @@ export function AnswerInput({ onSubmit }: AnswerInputProps) {
                 type="text"
                 value={answer}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnswer(e.target.value)}
-                placeholder="Type the pronunciation..."
+                placeholder="Write the pronunciation..."
             />
             <Button type="submit">Check</Button>
         </form>
