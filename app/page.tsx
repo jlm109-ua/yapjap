@@ -36,6 +36,7 @@ const pronunciations: { [key: string]: string } = {
   'ら': 'ra', 'り': 'ri', 'る': 'ru', 'れ': 're', 'ろ': 'ro',
   'ワ': 'wa', 'ヲ': 'wo', 'ン': 'n',
   'わ': 'wa', 'を': 'wo', 'ん': 'n',
+  // Dakuten
   'ガ': 'ga', 'ギ': 'gi', 'グ': 'gu', 'ゲ': 'ge', 'ゴ': 'go',
   'が': 'ga', 'ぎ': 'gi', 'ぐ': 'gu', 'げ': 'ge', 'ご': 'go',
   'ザ': 'za', 'ジ': 'ji', 'ズ': 'zu', 'ゼ': 'ze', 'ゾ': 'zo',
@@ -46,6 +47,29 @@ const pronunciations: { [key: string]: string } = {
   'ば': 'ba', 'び': 'bi', 'ぶ': 'bu', 'べ': 'be', 'ぼ': 'bo',
   'パ': 'pa', 'ピ': 'pi', 'プ': 'pu', 'ペ': 'pe', 'ポ': 'po',
   'ぱ': 'pa', 'ぴ': 'pi', 'ぷ': 'pu', 'ぺ': 'pe', 'ぽ': 'po',
+  // Combo syllables
+  'キャ': 'kya', 'キュ': 'kyu', 'キョ': 'kyo',
+  'きゃ': 'kya', 'きゅ': 'kyu', 'きょ': 'kyo',
+  'シャ': 'sha', 'シュ': 'shu', 'ショ': 'sho',
+  'しゃ': 'sha', 'しゅ': 'shu', 'しょ': 'sho',
+  'チャ': 'cha', 'チュ': 'chu', 'チョ': 'cho',
+  'ちゃ': 'cha', 'ちゅ': 'chu', 'ちょ': 'cho',
+  'ニャ': 'nya', 'ニュ': 'nyu', 'ニョ': 'nyo',
+  'にゃ': 'nya', 'にゅ': 'nyu', 'にょ': 'nyo',
+  'ヒャ': 'hya', 'ヒュ': 'hyu', 'ヒョ': 'hyo',
+  'ひゃ': 'hya', 'ひゅ': 'hyu', 'ひょ': 'hyo',
+  'ミャ': 'mya', 'ミュ': 'myu', 'ミョ': 'myo',
+  'みゃ': 'mya', 'みゅ': 'myu', 'みょ': 'myo',
+  'リャ': 'rya', 'リュ': 'ryu', 'リョ': 'ryo',
+  'りゃ': 'rya', 'りゅ': 'ryu', 'りょ': 'ryo',
+  'ギャ': 'gya', 'ギュ': 'gyu', 'ギョ': 'gyo',
+  'ぎゃ': 'gya', 'ぎゅ': 'gyu', 'ぎょ': 'gyo',
+  'ジャ': 'ja', 'ジュ': 'ju', 'ジョ': 'jo',
+  'じゃ': 'ja', 'じゅ': 'ju', 'じょ': 'jo',
+  'ビャ': 'bya', 'ビュ': 'byu', 'ビョ': 'byo',
+  'びゃ': 'bya', 'びゅ': 'byu', 'びょ': 'byo',
+  'ピャ': 'pya', 'ピュ': 'pyu', 'ピョ': 'pyo',
+  'ぴゃ': 'pya', 'ぴゅ': 'pyu', 'ぴょ': 'pyo',
 }
 
 export default function Home() {
