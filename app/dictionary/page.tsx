@@ -44,7 +44,6 @@ const pronunciations: { [key: string]: string } = {
   'ら': 'ra', 'り': 'ri', 'る': 'ru', 'れ': 're', 'ろ': 'ro',
   'ワ': 'wa', 'ヲ': 'wo', 'ン': 'n',
   'わ': 'wa', 'を': 'wo', 'ん': 'n',
-  // Dakuten
   'ガ': 'ga', 'ギ': 'gi', 'グ': 'gu', 'ゲ': 'ge', 'ゴ': 'go',
   'が': 'ga', 'ぎ': 'gi', 'ぐ': 'gu', 'げ': 'ge', 'ご': 'go',
   'ザ': 'za', 'ジ': 'ji', 'ズ': 'zu', 'ゼ': 'ze', 'ゾ': 'zo',
@@ -55,37 +54,12 @@ const pronunciations: { [key: string]: string } = {
   'ば': 'ba', 'び': 'bi', 'ぶ': 'bu', 'べ': 'be', 'ぼ': 'bo',
   'パ': 'pa', 'ピ': 'pi', 'プ': 'pu', 'ペ': 'pe', 'ポ': 'po',
   'ぱ': 'pa', 'ぴ': 'pi', 'ぷ': 'pu', 'ぺ': 'pe', 'ぽ': 'po',
-  // Combo syllables
-  'キャ': 'kya', 'キュ': 'kyu', 'キョ': 'kyo',
-  'きゃ': 'kya', 'きゅ': 'kyu', 'きょ': 'kyo',
-  'シャ': 'sha', 'シュ': 'shu', 'ショ': 'sho',
-  'しゃ': 'sha', 'しゅ': 'shu', 'しょ': 'sho',
-  'チャ': 'cha', 'チュ': 'chu', 'チョ': 'cho',
-  'ちゃ': 'cha', 'ちゅ': 'chu', 'ちょ': 'cho',
-  'ニャ': 'nya', 'ニュ': 'nyu', 'ニョ': 'nyo',
-  'にゃ': 'nya', 'にゅ': 'nyu', 'にょ': 'nyo',
-  'ヒャ': 'hya', 'ヒュ': 'hyu', 'ヒョ': 'hyo',
-  'ひゃ': 'hya', 'ひゅ': 'hyu', 'ひょ': 'hyo',
-  'ミャ': 'mya', 'ミュ': 'myu', 'ミョ': 'myo',
-  'みゃ': 'mya', 'みゅ': 'myu', 'みょ': 'myo',
-  'リャ': 'rya', 'リュ': 'ryu', 'リョ': 'ryo',
-  'りゃ': 'rya', 'りゅ': 'ryu', 'りょ': 'ryo',
-  'ギャ': 'gya', 'ギュ': 'gyu', 'ギョ': 'gyo',
-  'ぎゃ': 'gya', 'ぎゅ': 'gyu', 'ぎょ': 'gyo',
-  'ジャ': 'ja', 'ジュ': 'ju', 'ジョ': 'jo',
-  'じゃ': 'ja', 'じゅ': 'ju', 'じょ': 'jo',
-  'ビャ': 'bya', 'ビュ': 'byu', 'ビョ': 'byo',
-  'びゃ': 'bya', 'びゅ': 'byu', 'びょ': 'byo',
-  'ピャ': 'pya', 'ピュ': 'pyu', 'ピョ': 'pyo',
-  'ぴゃ': 'pya', 'ぴゅ': 'pyu', 'ぴょ': 'pyo',
 }
 
 export default function Dictionary() {
   const [learnedSyllables, setLearnedSyllables] = useState<LearnedSyllable[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [sortBy, setSortBy] = useState<'symbol' | 'pronunciation'>('symbol')
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     fetchLearnedSyllables()
@@ -107,26 +81,17 @@ export default function Dictionary() {
       setLearnedSyllables(data || [])
     } catch (err) {
       console.error('Error fetching learned syllables:', err)
-      setError('There was a problem fetching the syllables. Please try again later.')
+      setError('Hubo un problema al cargar las sílabas aprendidas. Por favor, intenta de nuevo.')
     } finally {
       setIsLoading(false)
     }
   }
 
-  const sortSyllables = (syllables: LearnedSyllable[]) => {
-    return syllables.sort((a, b) => {
-      const aValue = sortBy === 'symbol' ? a.syllable : pronunciations[a.syllable]
-      const bValue = sortBy === 'symbol' ? b.syllable : pronunciations[b.syllable]
-      return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
-    })
-  }
-
   const renderSyllables = (writingSystem: string) => {
     const filteredSyllables = learnedSyllables.filter(s => s.writing_system === writingSystem)
-    const sortedSyllables = sortSyllables(filteredSyllables)
     return (
       <div className="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
-        {sortedSyllables.map((syllable) => (
+        {filteredSyllables.map((syllable) => (
           <div key={syllable.id} className="border text-center p-4 rounded">
             <p className="text-2xl font-bold">{syllable.syllable}</p>
             <p className="text-sm text-gray-600">{pronunciations[syllable.syllable]}</p>
@@ -153,26 +118,6 @@ export default function Dictionary() {
         <p>No syllables learned yet. Start practicing!</p>
       ) : (
         <>
-          <div className="flex gap-4 mb-6">
-            <Select onValueChange={(value: String) => setSortBy(value as 'symbol' | 'pronunciation')}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="symbol">Japanese Symbol</SelectItem>
-                <SelectItem value="pronunciation">Pronunciation</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select onValueChange={(value: String) => setSortOrder(value as 'asc' | 'desc')}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort order" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="asc">Ascending</SelectItem>
-                <SelectItem value="desc">Descending</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
           <h2 className="text-xl font-semibold mt-6 mb-3">Hiragana</h2>
           {renderSyllables('hiragana')}
           <h2 className="text-xl font-semibold mt-6 mb-3">Katakana</h2>
