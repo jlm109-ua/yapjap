@@ -5,8 +5,8 @@ import Link from 'next/link'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'YapJap',
-  description: 'Una aplicación para aprender Katakana y Hiragana',
+  title: 'Learn Japanese',
+  description: 'An application to learn Katakana, Hiragana, and Japanese words',
 }
 
 export default function RootLayout({
@@ -15,12 +15,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
+    <html lang="en">
       <body className={inter.className}>
         <nav className="bg-gray-800 text-white p-4">
           <div className="container mx-auto flex justify-between">
-            <Link href="/" className="font-bold">YapJap!</Link>
-            <Link href="/dictionary" className="hover:underline">Dictionary</Link>
+            <Link href="/" className="font-bold">Learn Japanese</Link>
+            <div className="space-x-4">
+              <Link href="/dictionary" className="hover:underline">Syllable Dictionary</Link>
+              <Link href="/word-dictionary" className="hover:underline">Word Dictionary</Link>
+            </div>
           </div>
         </nav>
         {children}
