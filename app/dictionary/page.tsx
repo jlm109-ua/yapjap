@@ -3,13 +3,6 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { Button } from '@/components/Button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/Select'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
